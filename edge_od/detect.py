@@ -8,6 +8,7 @@ from tflite_support.task import vision
 import utils
 
 
+# change the model name same as model file name 
 MODEL_PATHS = {
   0 : 'Apple_Orange_arch0.tflite',
   1 : 'Apple_Orange_arch1.tflite',
@@ -16,12 +17,15 @@ MODEL_PATHS = {
   4 : 'Apple_Orange_arch4.tflite',
 }
 
+# assign the model name to this variable 
 selected_model = MODEL_PATHS[0]
 
+# rtsp://192.168.1.1:8080/h264_law.sdp
 # TODO change this to your camera's IP address
 IP = '192.168.0.102'
 PORT = '8080'
 URL = 'h264_ulaw.sdp'
+# in case of using USB camera just replace the variable with 0 
 ip_camera_url = 'rtsp://' + IP + ':' + PORT + '/' + URL
 
 default_width = 640
@@ -82,6 +86,7 @@ def run(model: str = selected_model, camera_id:str = ip_camera_url, width: int =
 
     if cv2.waitKey(1) == 27:
       break
+    # Remove below line if you don't need prievous of video
     cv2.imshow('', image)
 
   cap.release()
