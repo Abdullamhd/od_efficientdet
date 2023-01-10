@@ -6,23 +6,23 @@ from tflite_support.task import core
 from tflite_support.task import processor
 from tflite_support.task import vision
 import utils
+import os
+
+from concurrent.futures import Executor, ThreadPoolExecutor
+
+executor = ThreadPoolExecutor()
 
 
-MODEL_PATHS = {
-  0 : 'Apple_Orange_arch0.tflite',
-  1 : 'Apple_Orange_arch1.tflite',
-  2 : 'Apple_Orange_arch2.tflite',
-  3 : 'Apple_Orange_arch3.tflite',
-  4 : 'Apple_Orange_arch4.tflite',
-}
+from dotenv import load_dotenv
+load_dotenv()
 
-selected_model = MODEL_PATHS[0]
 
-# TODO change this to your camera's IP address
-IP = '192.168.0.102'
-PORT = '8080'
-URL = 'h264_ulaw.sdp'
-ip_camera_url = 'rtsp://' + IP + ':' + PORT + '/' + URL
+selected_model = os.getenv('MODEL_NAME')
+ip_camera_url = os.getenv('CAMERA_URL')
+trushold = os.getenv('TRUSHOLD')
+trushold = float(trushold)
+print(selected_model)
+print(ip_camera_url)
 
 default_width = 640
 default_height = 480
@@ -47,7 +47,7 @@ def run(model: str = selected_model, camera_id:str = ip_camera_url, width: int =
   base_options = core.BaseOptions(
       file_name=model, use_coral=False, num_threads=num_threads)
   detection_options = processor.DetectionOptions(
-      max_results=3, score_threshold=0.3)
+      max_results=3, score_threshold=trushold)
   options = vision.ObjectDetectorOptions(
       base_options=base_options, detection_options=detection_options)
   detector = vision.ObjectDetector.create_from_options(options)
@@ -69,6 +69,8 @@ def run(model: str = selected_model, camera_id:str = ip_camera_url, width: int =
     detection_result = detector.detect(input_tensor)
 
     image = utils.visualize(image, detection_result)
+    if len(detection_result.detections) > 0:
+        executor.submit(utils.send_data, image,detection_result.detections)
 
     if counter % fps_avg_frame_count == 0:
       end_time = time.time()

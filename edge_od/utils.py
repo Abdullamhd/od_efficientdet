@@ -2,6 +2,10 @@
 import cv2
 import numpy as np
 from tflite_support.task import processor
+import concurrent.futures
+executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+import time
+
 
 _MARGIN = 10  
 _ROW_SIZE = 10 
@@ -28,3 +32,20 @@ def visualize(
                 _FONT_SIZE, _TEXT_COLOR, _FONT_THICKNESS)
 
   return image
+
+
+
+
+
+last_time = None
+
+def send_data(image,detections):
+    global last_time
+    current_time = time.perf_counter()
+
+    if last_time is None:
+        last_time = current_time
+        print("sending data")
+    elif current_time - last_time > 20: # 5 seconds
+        last_time = current_time
+        print("sending data")
