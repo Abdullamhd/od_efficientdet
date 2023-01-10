@@ -5,6 +5,12 @@ from tflite_support.task import processor
 import concurrent.futures
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 import time
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
+time_delay = float(os.getenv("TIME_DELAY"))
 
 
 _MARGIN = 10  
