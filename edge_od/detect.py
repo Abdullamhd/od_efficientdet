@@ -16,13 +16,13 @@ executor = ThreadPoolExecutor()
 from dotenv import load_dotenv
 load_dotenv()
 
+selected_model = MODEL_PATHS[0]
 
-selected_model = os.getenv('MODEL_NAME')
-ip_camera_url = os.getenv('CAMERA_URL')
-trushold = os.getenv('TRUSHOLD')
-trushold = float(trushold)
-print(selected_model)
-print(ip_camera_url)
+# TODO change this to your camera's IP address
+IP = '192.168.0.102'
+PORT = '8080'
+URL = 'h264_ulaw.sdp'
+ip_camera_url = 'rtsp://' + IP + ':' + PORT + '/' + URL
 
 default_width = 640
 default_height = 480
@@ -84,6 +84,7 @@ def run(model: str = selected_model, camera_id:str = ip_camera_url, width: int =
 
     if cv2.waitKey(1) == 27:
       break
+    # Remove below line if you don't need prievous of video
     cv2.imshow('', image)
 
   cap.release()
