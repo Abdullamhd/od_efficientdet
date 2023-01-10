@@ -16,13 +16,12 @@ executor = ThreadPoolExecutor()
 from dotenv import load_dotenv
 load_dotenv()
 
-selected_model = MODEL_PATHS[0]
+selected_model = os.getenv("MODEL_NAME")
 
-# TODO change this to your camera's IP address
-IP = '192.168.0.102'
-PORT = '8080'
-URL = 'h264_ulaw.sdp'
-ip_camera_url = 'rtsp://' + IP + ':' + PORT + '/' + URL
+
+ip_camera_url = os.getenv("CAMERA_URL")
+
+trushold = float(os.getenv("TRUSHOLD"))
 
 default_width = 640
 default_height = 480
