@@ -1,0 +1,13 @@
+services:
+  od:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CAMERA_URL=${CAMERA_URL}
+      - MODEL_NAME=${MODEL_NAME}
+      - TRUSHOLD=${TRUSHOLD}
+      - TIME_DELAY=${TIME_DELAY}
+      - DEBUG_MODE=${DEBUG_MODE}
+      - CAMERA_URL2=${CAMERA_URL2}
+

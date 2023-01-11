@@ -6,6 +6,7 @@ import concurrent.futures
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 import time
 import os
+import log 
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -49,9 +50,16 @@ def send_data(image,detections):
     global last_time
     current_time = time.perf_counter()
 
+    # write status to stdout without log and print function 
+
     if last_time is None:
         last_time = current_time
-        print("sending data")
-    elif current_time - last_time > 20: # 5 seconds
+        class_name = detections[0].categories[0].category_name
+        # log(f"sending detection for {class_name}")
+        os.write(1, f"Sending data for {class_name} \n".encode()) # print & log not working from docker 
+
+        
+    elif current_time - last_time > 5: # seconds
         last_time = current_time
-        print("sending data")
+        class_name = detections[0].categories[0].category_name
+        os.write(1, f"Sending data for {class_name} \n".encode())

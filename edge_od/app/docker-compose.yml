@@ -1,0 +1,15 @@
+version: "3.3"
+
+services:
+  od:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: od:latest
+    container_name: od
+    restart: always
+    environment:
+      - name=value
+    
+
+      

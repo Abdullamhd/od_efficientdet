@@ -1,0 +1,18 @@
+{
+	"name": "CV Service",
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"docker-compose.yml"
+	],
+
+	"customizations": {
+		"vscode": {
+		  "extensions": ["dbaeumer.vscode-eslint","GitHub.copilot","ms-python.python","natqe.reload","GitHub.copilot-labs"]
+		}
+	  } ,
+
+		"service": "cvapp",
+
+	"workspaceFolder": "/workspace"
+
+}
